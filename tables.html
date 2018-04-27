@@ -68,6 +68,13 @@
         // We then dynamically display this content in our table. This is very similar to the group projects you just completed.
         // It's also very similar to the NYT search application. In fact, I copied a ton of code from there.
     
+        var availableTables = 0;
+        if (availableTables < 5) {
+            runTableQuery();
+        } else {
+            runWaitlistQuery();
+        };
+        
         function runTableQuery(){
     
             // Here we get the location of the root page.
@@ -77,7 +84,7 @@
             // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
             $.ajax({url: currentURL + "/api/tables", method: "GET"})
                 .done(function(tableData) {
-    
+                    availableTables++;
                     // Here we are logging the URL so we have access to it for troubleshooting
                     console.log("------------------------------------");
                     console.log("URL: " + currentURL + "/api/tables");
