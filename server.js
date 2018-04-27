@@ -64,7 +64,6 @@ app.get("/api/tables/:reservation", function (req, res) {
 if (tables.length <= 5) {
     app.post("/api/tables", function (req, res) {
         var newReservation = req.body;
-        availableTables++;
         newReservation.routeName = newReservation.customerName.replace(/\s+/g, "").toLowerCase();
 
         console.log(newReservation);
