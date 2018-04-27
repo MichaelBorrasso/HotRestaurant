@@ -5,7 +5,7 @@ var path = require("path");
 var app = express();
 var PORT = 3000;
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var tables = [
@@ -28,27 +28,27 @@ var waitlist = [
     // }
 ];
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "home.html"));
 });
 
-app.get("/reserve", function(req, res) {
+app.get("/reserve", function (req, res) {
     res.sendFile(path.join(__dirname, "reserve.html"));
 });
 
-app.get("/tables", function(req, res) {
+app.get("/tables", function (req, res) {
     res.sendFile(path.join(__dirname, "tables.html"));
 });
 
-app.get("/api/tables", function(req, res) {
+app.get("/api/tables", function (req, res) {
     return res.json(tables);
 });
 
-app.get("/api/waitlist", function(req, res) {
+app.get("/api/waitlist", function (req, res) {
     return res.json(waitlist);
 });
 
-app.get("/api/tables/:reservation", function(req, res) {
+app.get("/api/tables/:reservation", function (req, res) {
     var chosen = req.params.reservation;
 
     console.log(chosen);
@@ -61,26 +61,38 @@ app.get("/api/tables/:reservation", function(req, res) {
     return res.json(false);
 });
 
-app.post("/api/tables", function(req, res) {
-    var newReservation = req.body;
+var tables = 0;
+function addTable() {
+    app.post("/api/tables", function (req, res) {
+        var newReservation = req.body;
 
-    newReservation.routeName = newReservation.customerName.replace(/\s+/g, "").toLowerCase();
+        newReservation.routeName = newReservation.customerName.replace(/\s+/g, "").toLowerCase();
 
-    console.log(newReservation);
-    tables.push(newReservation);
-    res.json(newReservation);
-});
+        console.log(newReservation);
+        tables.push(newReservation);
+        res.json(newReservation);
+        tables++;
+    });
+}
 
-app.post("/api/waitlist", function(req, res) {
-    var addWaitlist = req.body;
+function addWaitTable() {
+    app.post("/api/waitlist", function (req, res) {
+        var addWaitlist = req.body;
 
-    addWaitlist.routeName = newWaitlist.customerName.replace(/\s+/g, "").toLowerCase();
+        addWaitlist.routeName = newWaitlist.customerName.replace(/\s+/g, "").toLowerCase();
 
-    console.log(addWaitlist);
-    waitlist.push(addWaitlist);
-    res.json(addWaitlist);
-});
+        console.log(addWaitlist);
+        waitlist.push(addWaitlist);
+        res.json(addWaitlist);
+    });
+}
 
-app.listen(PORT, function() {
+if (tables < 5) {
+    addTable();
+} else {
+    addWaitTable();
+}
+
+app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });
