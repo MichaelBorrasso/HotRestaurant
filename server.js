@@ -61,8 +61,7 @@ app.get("/api/tables/:reservation", function (req, res) {
     return res.json(false);
 });
 
-var availableTables = 0;
-if (availableTables <= 5) {
+if (tables.length <= 5) {
     app.post("/api/tables", function (req, res) {
         var newReservation = req.body;
         availableTables++;
