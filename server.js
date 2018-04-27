@@ -8,7 +8,7 @@ var PORT = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var reservations = [
+var tables = [
     // {
     //     routeName: "kristianfidrych",
     //     name: "Kristian Fidrych",
@@ -40,7 +40,7 @@ app.get("/tables", function(req, res) {
     res.sendFile(path.join(__dirname, "tables.html"));
 });
 
-app.get("/api/reservations", function(req, res) {
+app.get("/api/tables", function(req, res) {
     return res.json(reservations);
 });
 
@@ -48,26 +48,26 @@ app.get("/api/waitlist", function(req, res) {
     return res.json(waitlist);
 });
 
-app.get("/api/reservations/:reservation", function(req, res) {
+app.get("/api/tables/:reservation", function(req, res) {
     var chosen = req.params.reservation;
 
     console.log(chosen);
 
-    for (var i = 0; i < reservations.length; i++) {
-        if (chosen === reservations[i].routeName) {
-            return res.json(reservations[i]);
+    for (var i = 0; i < tables.length; i++) {
+        if (chosen === tables[i].routeName) {
+            return res.json(tables[i]);
         }
     }
     return res.json(false);
 });
 
-app.post("/api/reservations", function(req, res) {
+app.post("/api/tables", function(req, res) {
     var newReservation = req.body;
 
     newReservation.routeName = newReservation.name.replace(/\s+/g, "").toLowerCase();
 
     console.log(newReservation);
-    reservations.push(newReservation);
+    tables.push(newReservation);
     res.json(newReservation);
 });
 
