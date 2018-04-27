@@ -61,13 +61,16 @@ app.get("/api/tables/:reservation", function(req, res) {
     return res.json(false);
 });
 
+var availableTables = 0;
 app.post("/api/tables", function(req, res) {
     var newReservation = req.body;
-
+    availableTables++;
     newReservation.routeName = newReservation.customerName.replace(/\s+/g, "").toLowerCase();
 
     console.log(newReservation);
-    tables.push(newReservation);
+    if (availableTables < 5) {
+        tables.push(newReservation);
+    };
     res.json(newReservation);
 });
 
